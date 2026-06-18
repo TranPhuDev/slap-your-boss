@@ -83,7 +83,7 @@ function updateVibration(event: Event) {
       <p v-if="nameError" class="form-message">{{ nameError }}</p>
 
       <label class="file-button">
-        <input accept="image/jpeg,image/png,image/webp" capture="user" type="file" @change="onFileChange" />
+        <input accept="image/jpeg,image/png,image/webp" type="file" @change="onFileChange" />
         <span>{{ processing ? 'PROCESSING FACE...' : 'CHOOSE OR CAPTURE PHOTO' }}</span>
       </label>
       <p class="privacy">Your photo is processed only on this device and is never uploaded.</p>
