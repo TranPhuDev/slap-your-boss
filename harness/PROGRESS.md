@@ -19,6 +19,7 @@ Last updated: 2026-06-18
 1. Add `VITE_KOFI_URL` to `.env.example`.
 2. Render Ko-fi support only outside gameplay and only when the configured URL is valid.
 3. Verify tests, typecheck, build, SEO check, and harness check.
+4. Ensure production builds include the public Ko-fi URL so donation support is visible after deploy.
 
 ## Work Log
 
@@ -1232,6 +1233,41 @@ Results:
 Remaining work:
 
 - Browser visual check can confirm whether the new spacing feels right on mobile and desktop.
+
+## 2026-06-18 - F-021 production Ko-fi visibility
+
+Work performed:
+
+- Investigated why the donate button was not visible in production.
+- Confirmed the support UI is hidden when `VITE_KOFI_URL` is missing at build time.
+- Added `.env.production` with the public Ko-fi URL so Vite production builds include the configured support link without requiring a dashboard-only env setting.
+- Verified the production bundle contains `https://ko-fi.com/slapyourboss` after `npm run build`.
+
+Files changed:
+
+- `.env.production`
+- `harness/PROGRESS.md`
+- `harness/TEST_CASES.md`
+
+Commands run:
+
+- `node scripts/harness-check.mjs`
+- `pnpm test`
+- `npm run build`
+- `pnpm test:seo`
+- `rg -n "ko-fi\\.com/slapyourboss|VITE_KOFI_URL|Support on Ko-fi|Support this game on Ko-fi" dist src .env.example .env.production`
+
+Results:
+
+- Harness check passed with F-021 active.
+- `pnpm test` passed: 1 file, 15 tests.
+- `npm run build` passed and emitted the existing non-fatal Vite chunk-size warning.
+- `pnpm test:seo` passed.
+- Source/output search confirmed `.env.production` and the generated production bundle include the Ko-fi URL.
+
+Remaining work:
+
+- Redeploy production so Vercel/hosting rebuilds with `.env.production`; browser production verification remains pending.
 
 ## Rules
 
