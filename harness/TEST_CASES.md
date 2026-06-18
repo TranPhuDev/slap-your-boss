@@ -1,0 +1,46 @@
+# TEST_CASES.md
+
+Statuses: `NOT_RUN`, `PASS`, `FAIL`, `BLOCKED`.
+
+| ID | Feature | Test | Expected | Status | Evidence / Notes |
+|---|---|---|---|---|---|
+| TC-001 | F-001 | Open at 390x844 | Landing and suit character visible without horizontal overflow | BLOCKED | Needs browser viewport verification; CSS is mobile-first and `pnpm build` passed. |
+| TC-002 | F-001 | Empty/whitespace boss name | PLAY disabled and validation shown | PASS | `pnpm test` covers boss-name validation; `pnpm build` passed. |
+| TC-003 | F-001 | Boss name over 30 chars | Value prevented or reported | PASS | `maxlength=30`, normalization, and validation implemented; `pnpm test` covers validation. |
+| TC-004 | F-001 | Valid/invalid/oversized files | Correct validation behavior | PASS | `pnpm test` covers valid/invalid file type; size/type validation implemented. |
+| TC-005 | F-002 | Single/no/multiple faces | Preview, retry error, largest-face selection | BLOCKED | Bugfix added CPU MediaPipe initialization, matching runtime version, retry after failed init, decode fallback, and clearer errors. Needs real images/browser runtime to confirm preview. |
+| TC-006 | F-002 | Replace photo repeatedly | Old Object URLs released | BLOCKED | Needs browser memory verification; App revokes replaced Object URLs and unmount cleanup revokes current URL. |
+| TC-007 | F-002 | Inspect network/storage | No photo/landmarks leave memory | BLOCKED | Needs browser Network/Application inspection; code stores only settings/stats keys. Detector assets may load from MediaPipe static URLs, but photos are not uploaded. |
+| TC-008 | F-003 | Enter/leave Pixi scene five times | No duplicate canvas/listeners | BLOCKED | Needs browser verification; runtime destroys Pixi app/ticker/textures on unmount. |
+| TC-009 | F-004 | Play one round | Countdown and ~15-second duration | BLOCKED | Needs browser timing verification; implementation uses `performance.now()` and `GAME_DURATION_MS = 15_000`. |
+| TC-010 | F-004 | Tap/swipe/outside/expired input | Swipe events counted; tap gestures ignored | PASS | `pnpm test` verifies tap gestures are ignored (null) and swiping registers successfully. |
+| TC-011 | F-005 | Strong alternating slaps | Correct deformation and recovery | BLOCKED | Needs browser visual verification; Pixi runtime applies directional skew/scale/head impulse with recovery. |
+| TC-012 | F-005 | Reach damage thresholds | Five distinct levels | BLOCKED | Needs visual browser verification; scoring reaches 0-100 damage, but five visual tiers need follow-up refinement. |
+| TC-013 | F-006 | Desktop enters PLAYING | Hand cursor only in game | BLOCKED | Needs desktop browser verification; fine-pointer media query gates custom cursor. |
+| TC-014 | F-006 | Touch emulation | No fake cursor | BLOCKED | Needs touch emulation; implementation hides cursor unless `(hover: hover) and (pointer: fine)`. |
+| TC-015 | F-006 | Sound/vibration disabled or unsupported | Gameplay continues | PASS | Optional Web Audio and `navigator.vibrate?.` guards implemented; build passed. |
+| TC-016 | F-007 | Combo pause and score boundaries | Correct reset/ranges/rank | PASS | `pnpm test` covers combo reset, damage, stress, final score, and rank. |
+| TC-017 | F-007 | SLAP AGAIN / NEW BOSS | Correct retain/clear cleanup | BLOCKED | Needs browser flow verification; code retains boss/face for SLAP AGAIN and revokes face URL on NEW BOSS. |
+| TC-018 | F-008 | Save/share report | PNG or fallback succeeds | BLOCKED | Needs browser download/share branch verification; Canvas export and Web Share fallback implemented. |
+| TC-019 | F-008 | Inspect storage | No image data stored | BLOCKED | Needs browser storage inspection; storage module only writes settings/stats JSON. |
+| TC-020 | F-009 | Repeat ten sessions | No accumulating resources | BLOCKED | Needs browser memory/session verification; cleanup paths implemented. |
+| TC-021 | F-009 | Keyboard/focus | Controls are usable | BLOCKED | Needs browser accessibility pass; form labels and focus-visible styles implemented. |
+| TC-022 | F-010 | Production build/preview | dist created and assets load | PASS | `pnpm build` passed and created `dist/`; `pnpm preview` background command was blocked by shell policy, so preview load remains unverified. |
+| TC-023 | F-011 | UV mapping | Landmark UVs are crop-relative and vertices derive from fixed UVs | PASS | `pnpm test` covers UV and vertex generation. |
+| TC-024 | F-011 | Triangle topology | Tessellation-derived triangles are complete, in range, and non-degenerate | PASS | `pnpm test` covers graph-derived topology and official MediaPipe topology for 478 landmarks. |
+| TC-025 | F-011 | Region classification | Eye, mouth, cheek, nose, jaw, forehead regions classify distinctly | PASS | `pnpm test` covers classifier with explicit region sets. |
+| TC-026 | F-011 | Mesh deformation physics | Slap impulse, Gaussian falloff, spring recovery, max clamp, and reset work | PASS | `pnpm test` covers deformation system and reset without rebuilding arrays. |
+| TC-027 | F-011 | Real uploaded face mesh visual | Gameplay shows uploaded face as PixiJS mesh with no default eyes/mouth | BLOCKED | Needs browser/manual verification with a real photo. Code path uses `MeshSimple` and removed default gameplay eyes/mouth. |
+| TC-028 | F-011 | Replay/new boss mesh lifecycle | SLAP AGAIN keeps mesh; NEW BOSS clears/revokes face data | BLOCKED | Needs browser memory/lifecycle verification. App keeps `FaceAsset` for replay and clears it on NEW BOSS. |
+| TC-029 | F-011 | Real head crop | Head crop expands beyond face to include hair/ears/chin and is masked softly | PASS | `pnpm test` covers directional crop expansion; implementation applies a soft alpha mask in canvas. |
+| TC-030 | F-011 | Landing real head display | Uploaded photo replaces cartoon head on landing | BLOCKED | Needs browser/manual visual verification; component renders `preview-real-head` instead of `.preview-head` when face exists. |
+| TC-031 | F-011 | Gameplay real head display | Gameplay uses real head and does not render cartoon head outline/default face | BLOCKED | Needs browser/manual visual verification; renderer uses real `backHeadSprite` plus mesh and removed cartoon outline/default eyes/mouth. |
+| TC-032 | F-011 | SLAP AGAIN keeps real head | Replay does not reset to cartoon head | BLOCKED | Needs browser/manual flow verification; app keeps `FaceAsset` across replay. |
+| TC-033 | F-011 | Gameplay face layer separation | Back head is rendered behind face mesh and no default head/face is rendered | PASS | `pnpm test` covers face crop placement; renderer uses full real `backHeadCanvas` under `faceMesh` to avoid mesh holes/white gaps. Browser visual check still required. |
+| TC-034 | F-011 | Eye distortion reduction | Eye regions have low deformation weight and displacement is clamped | PASS | Deformation constants updated; `pnpm test` covers displacement clamp and spring recovery. |
+| TC-035 | F-011 | Eye effects hidden by default | Eye overlay is not always visible | BLOCKED | Code sets `eyeEffects.visible = false` on mount and only enables it for strong slap/high damage; needs browser visual confirmation. |
+| TC-036 | F-011 | Hair-preserving head crop | Real head crop keeps hair/ears/forehead/chin | BLOCKED | Head crop was expanded and mask relaxed; needs browser/manual visual confirmation with real photos. |
+| TC-037 | F-011 | Playwright setup | Browser visual harness exists with Chromium config and visual-test mode | BLOCKED | Config, scripts, test hooks, fixture, and specs were added. `@playwright/test` install failed with registry `EACCES`, so Chromium/baselines could not be generated. |
+| TC-038 | F-011 | Visual idle baseline | `pnpm test:visual:update` creates idle screenshot baseline | BLOCKED | Command failed because `playwright` is not installed. No baseline image exists yet. |
+| TC-039 | F-011 | Visual after-slap baseline | Slap screenshot baseline asserts deformation and eye limits | BLOCKED | Spec exists, but command failed because `playwright` is not installed. No baseline image exists yet. |
+| TC-040 | F-011 | Desktop hand cursor right-half hover | Hand cursor remains visible while moving over the right half of gameplay | BLOCKED | Code-level fix applied by using a single `translate3d(...) scaleX(...)` transform and removing separate CSS scale. `pnpm test`, `pnpm typecheck`, `pnpm build`, and harness check passed. Needs desktop browser hover verification. |
