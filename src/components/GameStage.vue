@@ -7,6 +7,8 @@ import { createSlapFromGesture, type PointerSnapshot } from '../game/input'
 import type { FaceAsset, RoundState, SafeSettings, SlapEvent } from '../types/game'
 import type { SlapE2EApi } from '../types/e2e'
 
+const HAND_HIT_CURSOR_DURATION_MS = 200
+
 const props = defineProps<{
   bossName: string
   face: FaceAsset
@@ -46,7 +48,7 @@ watch(
   () => {
     if (props.round.lastSlapAt > 0) {
       cursor.value.hitting = true
-      window.setTimeout(() => (cursor.value.hitting = false), 110)
+      window.setTimeout(() => (cursor.value.hitting = false), HAND_HIT_CURSOR_DURATION_MS)
     }
   },
 )

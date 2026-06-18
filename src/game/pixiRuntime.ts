@@ -3,6 +3,10 @@ import { FaceMeshRenderer } from './face/FaceMeshRenderer'
 import type { FaceAsset, SlapDirection, SlapEvent } from '../types/game'
 import type { SlapE2ERenderState } from '../types/e2e'
 
+export const SLAP_RECOIL_DURATION_MS = 760
+export const IMPACT_PARTICLE_ALPHA_DECAY = 0.017
+export const IMPACT_PARTICLE_RISE_PER_FRAME = 1.65
+
 export class PixiSlapRuntime {
   private app: Application | null = null
   private root = new Container()
@@ -95,7 +99,7 @@ export class PixiSlapRuntime {
     this.body.rotation = Math.sin(elapsed * 1.4) * 0.015
     this.faceRenderer.update(1)
     if (this.lastSlap) {
-      const age = Math.min(1, (performance.now() - this.lastSlap.at) / 520)
+      const age = Math.min(1, (performance.now() - this.lastSlap.at) / SLAP_RECOIL_DURATION_MS)
       const impulse = (1 - age) * (this.lastSlap.direction === 'RIGHT' ? 1 : -1)
       const power = this.lastSlap.power / 100
       this.head.rotation = impulse * 0.32 * power
@@ -110,8 +114,8 @@ export class PixiSlapRuntime {
       this.head.scale.y += (1 - this.head.scale.y) * 0.18
     }
     for (const particle of this.particles) {
-      particle.alpha -= 0.025
-      particle.y -= 2
+      particle.alpha -= IMPACT_PARTICLE_ALPHA_DECAY
+      particle.y -= IMPACT_PARTICLE_RISE_PER_FRAME
       particle.rotation += 0.08
       if (particle.alpha <= 0) {
         particle.removeFromParent()

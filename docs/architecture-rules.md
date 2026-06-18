@@ -4,7 +4,7 @@
 
 - Vue UI: screens, forms, transitions, HUD, result controls.
 - Game runtime: PixiJS, loop, input, animation, effects.
-- Services: face processing, image processing, report export.
+- Services: face processing and image processing.
 - Composables: app state, boss profile, settings.
 
 Dependency direction:

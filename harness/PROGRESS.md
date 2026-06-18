@@ -2,8 +2,8 @@
 
 ## Current Status
 
-Active feature: F-011  
-Overall status: Implemented through F-011 with command verification; browser/manual image verification remains pending  
+Active feature: F-016  
+Overall status: F-016 implemented and command-verified; favicon now uses a cartoon character SVG  
 Last updated: 2026-06-18
 
 ## Baseline
@@ -16,11 +16,229 @@ Last updated: 2026-06-18
 
 ## Current Plan
 
-1. Complete release verification with a browser and real face images when browser tooling is available.
-2. Verify MediaPipe model/WASM asset loading under deployed HTTPS.
-3. Inspect localStorage/network during manual browser verification.
+1. Replace the default favicon SVG with an original cartoon boss character icon.
+2. Keep the existing `/favicon.svg` link in `index.html`.
+3. Verify build and harness check.
 
 ## Work Log
+
+### 2026-06-18 - F-016 cartoon character favicon
+
+Feature ID: F-016
+
+Work performed:
+
+- Marked F-015 done and added F-016 as the active feature.
+- Replaced the default favicon SVG with an original cartoon boss character icon.
+- Kept the existing `index.html` favicon link pointing to `/favicon.svg`.
+- Confirmed the favicon is static SVG and contains no user photo/base64 data.
+
+Files modified:
+
+- `harness/FEATURE_LIST.md`
+- `harness/PROGRESS.md`
+- `harness/TEST_CASES.md`
+- `public/favicon.svg`
+
+Commands run:
+
+```text
+node scripts/harness-check.mjs
+pnpm build
+Select-String -Path index.html -Pattern "favicon.svg"
+```
+
+Results:
+
+- Harness check passed with F-016 active.
+- `pnpm build` passed. Vite still emits the known non-fatal chunk-size warning.
+- `index.html` still references `/favicon.svg`.
+
+Remaining:
+
+- Browser tab visual verification was not run in this session.
+
+### 2026-06-18 - F-015 slightly longer slap effects
+
+Feature ID: F-015
+
+Work performed:
+
+- Marked F-014 done and added F-015 as the active feature.
+- Increased slap head recoil duration from the previous inline 520 ms to `SLAP_RECOIL_DURATION_MS = 760`.
+- Slowed impact particle/text fade from the previous inline `0.025` alpha decay to `IMPACT_PARTICLE_ALPHA_DECAY = 0.017`.
+- Reduced particle upward speed slightly so comic impact text/stars linger in place a bit longer.
+- Increased desktop hitting cursor duration from 110 ms to 170 ms.
+- Added unit coverage for the new slap feedback timing range.
+
+Files modified:
+
+- `harness/FEATURE_LIST.md`
+- `harness/PROGRESS.md`
+- `src/game/pixiRuntime.ts`
+- `src/components/GameStage.vue`
+- `src/game/game.test.ts`
+
+Commands run:
+
+```text
+node scripts/harness-check.mjs
+pnpm test
+pnpm typecheck
+pnpm build
+rg -n "SLAP_RECOIL_DURATION_MS|IMPACT_PARTICLE_ALPHA_DECAY|HAND_HIT_CURSOR_DURATION_MS|520|0\\.025|110" src
+```
+
+Results:
+
+- Harness check passed with F-015 active.
+- `pnpm test` passed: 1 file, 14 tests.
+- `pnpm typecheck` passed.
+- `pnpm build` passed. Vite still emits the known non-fatal chunk-size warning.
+- Search confirmed the slap recoil/fade/cursor timings now use named constants; remaining `520`/`110` matches are canvas sizes or unrelated geometry.
+
+Remaining:
+
+- Browser visual feel check was not run in this session; command verification passed.
+
+### 2026-06-18 - F-014 remove cartoon bruise effects
+
+Feature ID: F-014
+
+Work performed:
+
+- Marked F-013 as cancelled and added F-014 as the active feature for removing the just-added bruise effect.
+- Removed the bruise overlay, state, drawing helpers, and reset hooks from `FaceMeshRenderer`.
+- Removed bruise fields from the visual E2E render state.
+- Removed bruise unit coverage and deleted the bruise utility module.
+
+Files modified:
+
+- `harness/FEATURE_LIST.md`
+- `harness/PROGRESS.md`
+- `harness/TEST_CASES.md`
+- `src/game/face/FaceMeshRenderer.ts`
+- `src/game/game.test.ts`
+- `src/types/e2e.ts`
+
+Files deleted:
+
+- `src/game/face/bruiseEffects.ts`
+
+Commands run:
+
+```text
+node scripts/harness-check.mjs
+pnpm test
+pnpm typecheck
+pnpm build
+rg -n "bruise|Bruise" src
+```
+
+Results:
+
+- Harness check passed with F-014 active.
+- `pnpm test` passed: 1 file, 13 tests.
+- `pnpm typecheck` passed.
+- `pnpm build` passed. Vite still emits the known non-fatal chunk-size warning.
+- Source search found no remaining `bruise` references under `src`.
+
+Remaining:
+
+- Browser visual verification was not run in this session; code-level removal and command verification passed.
+
+### 2026-06-18 - F-013 cartoon bruise effects on gameplay face
+
+Feature ID: F-013
+
+Work performed:
+
+- Added F-013 as the active feature and marked F-012 done after command verification.
+- Added cartoon bruise effect utilities for damage-based opacity, mark count, and slap-side placement.
+- Added a PixiJS `Graphics` bruise overlay above the face mesh with stylized purple/yellow ellipse marks and comic scratch highlights.
+- Updated reset/destroy paths so SLAP AGAIN/new renderer mount clears bruise effects with the mesh.
+- Added E2E render-state fields for bruise visibility, opacity, and mark count.
+- Added unit coverage for bruise scaling and side selection.
+
+Files created:
+
+- `src/game/face/bruiseEffects.ts`
+
+Files modified:
+
+- `harness/FEATURE_LIST.md`
+- `harness/PROGRESS.md`
+- `harness/TEST_CASES.md`
+- `src/game/face/FaceMeshRenderer.ts`
+- `src/game/game.test.ts`
+- `src/types/e2e.ts`
+
+Commands run:
+
+```text
+node scripts/harness-check.mjs
+pnpm test
+pnpm typecheck
+pnpm build
+```
+
+Results:
+
+- Harness check passed with F-013 active.
+- `pnpm test` passed: 1 file, 14 tests.
+- `pnpm typecheck` passed.
+- `pnpm build` passed. Vite still emits the known non-fatal chunk-size warning.
+- Source search found no logging/storage/share/export additions in the changed face/result service areas.
+
+Remaining:
+
+- Browser visual verification with a real uploaded face is still pending; Playwright/browser automation is not available in this environment.
+
+### 2026-06-18 - F-012 remove report save and share controls
+
+Feature ID: F-012
+
+Work performed:
+
+- Added F-012 as the active feature and moved F-011 to blocked because its browser/manual verification remains pending.
+- Removed Save Report and Share actions from the result screen.
+- Deleted the now-unused report PNG export/download service.
+- Updated current product/architecture docs so replay/new-boss is the result flow and report export is no longer a listed service.
+- Updated test cases for the removed save/share behavior.
+
+Files modified:
+
+- `harness/FEATURE_LIST.md`
+- `harness/PROGRESS.md`
+- `harness/TEST_CASES.md`
+- `docs/product-requirements.md`
+- `docs/architecture-rules.md`
+- `src/components/ResultScreen.vue`
+
+Files deleted:
+
+- `src/services/reportExport.ts`
+
+Commands run:
+
+```text
+node scripts/harness-check.mjs
+pnpm test
+pnpm typecheck
+pnpm build
+```
+
+Results:
+
+- Harness check passed with F-012 active.
+- `pnpm test` passed: 1 file, 13 tests.
+- `pnpm typecheck` passed.
+- `pnpm build` passed. Vite still emits the known non-fatal chunk-size warning.
+- Source search found no remaining result report export/share/download handlers under `src`.
+
+Remaining:
+
+- Browser click-through verification was not run in this session; code-level verification and build/test/typecheck passed.
 
 ### 2026-06-18 - F-011 external custom MP3 audio file support
 

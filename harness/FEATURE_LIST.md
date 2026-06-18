@@ -417,7 +417,7 @@ Prepare a verified static production build for Cloudflare Pages.
 
 ## F-011 — MediaPipe Face Mesh deformation pipeline
 
-State: active
+State: blocked
 Priority: P0
 
 ### Behavior
@@ -455,3 +455,196 @@ Replace the oval face sprite with a real MediaPipe landmark mesh rendered by Pix
 - Run `pnpm typecheck`.
 - Run `pnpm build`.
 - Record browser/manual verification limitations honestly.
+
+
+---
+
+## F-012 — Remove report save and share controls
+
+State: done
+Priority: P1
+
+### Behavior
+
+The result screen no longer offers Save Report or Share actions. Players can still review the Slap Report metrics, play again, or start with a new boss.
+
+### Scope
+
+- Remove save report and share controls from the result screen.
+- Remove now-unused report export/download code if no longer referenced.
+- Keep scoring, result metrics, replay, new boss, settings, and safe local stats behavior unchanged.
+
+### Out of scope
+
+- Backend, upload service, database, login, public links, or public photo storage.
+- Major result screen redesign.
+- Changes to gameplay scoring or face processing.
+
+### Acceptance criteria
+
+- Result screen contains no Save Report or Share button/action.
+- No report PNG export/download/share code remains reachable from the app UI.
+- Slap Report metrics remain visible.
+- SLAP AGAIN and NEW BOSS still work.
+- `pnpm test`, `pnpm typecheck`, and `pnpm build` succeed.
+
+### Verification
+
+- Run `node .\scripts\harness-check.mjs`.
+- Run `pnpm test`.
+- Run `pnpm typecheck`.
+- Run `pnpm build`.
+
+
+---
+
+## F-013 — Cartoon bruise effects on slapped face
+
+State: cancelled
+Priority: P1
+
+### Behavior
+
+Gameplay shows cartoon bruise marks on the uploaded boss face as damage increases, while staying non-realistic and avoiding blood or gore.
+
+### Scope
+
+- Add stylized bruise overlays to the PixiJS gameplay face renderer.
+- Scale bruise visibility with current face damage and slap direction.
+- Keep replay reset and new boss cleanup behavior intact.
+- Keep photo processing local and avoid storing image data.
+
+### Out of scope
+
+- Realistic wounds, blood, gore, or identity-targeted insults.
+- Backend, upload service, database, login, or public photo storage.
+- Re-running MediaPipe during gameplay.
+
+### Acceptance criteria
+
+- Bruise effects are visible at higher damage levels.
+- Bruise effects are cartoon/stylized, not realistic injury.
+- Bruise effects reset for SLAP AGAIN and clean up with the PixiJS renderer.
+- No photo bytes/base64/File/Blob/landmarks are logged or persisted.
+- `pnpm test`, `pnpm typecheck`, and `pnpm build` succeed.
+
+### Verification
+
+- Run `node .\scripts\harness-check.mjs`.
+- Run `pnpm test`.
+- Run `pnpm typecheck`.
+- Run `pnpm build`.
+- Record browser/manual verification limitations honestly.
+
+
+---
+
+## F-014 — Remove cartoon bruise effects
+
+State: done
+Priority: P1
+
+### Behavior
+
+Gameplay no longer shows the cartoon bruise overlay that was added in F-013. Existing face mesh deformation, slap effects, replay, and new boss behavior remain unchanged.
+
+### Scope
+
+- Remove the F-013 bruise overlay from the PixiJS face renderer.
+- Remove now-unused bruise utility code, tests, and visual state fields.
+- Keep existing slap deformation, eye effects, scoring, and result screen behavior unchanged.
+
+### Out of scope
+
+- Restoring report save/share.
+- Major gameplay or renderer refactors.
+- Backend, upload service, database, login, or public photo storage.
+
+### Acceptance criteria
+
+- No bruise overlay code remains in the gameplay renderer.
+- No bruise utility or tests remain.
+- Existing face deformation and slap impact effects still compile.
+- `pnpm test`, `pnpm typecheck`, and `pnpm build` succeed.
+
+### Verification
+
+- Run `node .\scripts\harness-check.mjs`.
+- Run `pnpm test`.
+- Run `pnpm typecheck`.
+- Run `pnpm build`.
+
+
+---
+
+## F-015 — Slightly longer slap effects
+
+State: done
+Priority: P1
+
+### Behavior
+
+Slap visual feedback lasts slightly longer so the head recoil, comic impact particles/text, and desktop hitting cursor feel less abrupt.
+
+### Scope
+
+- Increase PixiJS slap recoil duration modestly.
+- Slow impact particle/text fade modestly.
+- Keep scoring, input timing, round duration, and face processing unchanged.
+- Keep cleanup behavior for particles and runtime destroy intact.
+
+### Out of scope
+
+- New visual effects or bruises.
+- Changes to damage/scoring formulas.
+- Backend, upload service, database, login, or public photo storage.
+
+### Acceptance criteria
+
+- Slap effects linger a little longer than before.
+- Repeated slaps still clean up expired particles.
+- Input cooldown and 15-second round timing are unchanged.
+- `pnpm test`, `pnpm typecheck`, and `pnpm build` succeed.
+
+### Verification
+
+- Run `node .\scripts\harness-check.mjs`.
+- Run `pnpm test`.
+- Run `pnpm typecheck`.
+- Run `pnpm build`.
+
+
+---
+
+## F-016 — Cartoon character favicon
+
+State: active
+Priority: P2
+
+### Behavior
+
+The website favicon shows a simple cartoon boss character instead of the default icon.
+
+### Scope
+
+- Replace the existing static favicon asset with an original cartoon character SVG.
+- Keep the existing `/favicon.svg` link contract unchanged.
+- Avoid using uploaded user photos or generated personal image data.
+
+### Out of scope
+
+- App UI redesign.
+- Runtime image processing changes.
+- Backend, upload service, database, login, or public photo storage.
+
+### Acceptance criteria
+
+- `public/favicon.svg` contains a cartoon character icon.
+- `index.html` continues to reference `/favicon.svg`.
+- The favicon asset is static and contains no user photo data.
+- `pnpm build` succeeds.
+
+### Verification
+
+- Run `node .\scripts\harness-check.mjs`.
+- Run `pnpm build`.

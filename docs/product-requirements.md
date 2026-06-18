@@ -13,7 +13,7 @@ Landing with suited character
 -> 3, 2, 1, SLAP!
 -> tap/swipe for 15 seconds
 -> Slap Report
--> replay/new boss/save/share
+-> replay/new boss
 ```
 
 Required metrics:
@@ -51,5 +51,5 @@ Your photo is processed only on this device and is never uploaded.
 Safety copy:
 
 ```text
-A silly cartoon stress-relief game. Keep it virtual.
+Did your boss just scold you?
 ```

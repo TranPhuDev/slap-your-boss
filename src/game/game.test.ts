@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { comboAfterIdle, registerSlap, resetRoundState } from './round'
 import { comboMultiplier, faceDamageFromRaw, finalScore, rankForScore, stressReleasedFromSlaps } from './scoring'
 import { createSlapFromGesture } from './input'
+import { IMPACT_PARTICLE_ALPHA_DECAY, SLAP_RECOIL_DURATION_MS } from './pixiRuntime'
 import { clamp } from '../utils/math'
 import { validateBossName, validateImageFile } from '../utils/validation'
 import { formatFaceProcessingError } from '../services/faceProcessing'
@@ -162,6 +163,13 @@ describe('game formulas', () => {
     resetMesh(mesh)
     expect(mesh.vertices).toBe(sameVertices)
     expect(Array.from(mesh.velocities)).toEqual([0, 0, 0, 0, 0, 0])
+  })
+
+  it('keeps slap feedback visible long enough to read', () => {
+    expect(SLAP_RECOIL_DURATION_MS).toBeGreaterThanOrEqual(700)
+    expect(SLAP_RECOIL_DURATION_MS).toBeLessThanOrEqual(900)
+    expect(IMPACT_PARTICLE_ALPHA_DECAY).toBeLessThan(0.025)
+    expect(IMPACT_PARTICLE_ALPHA_DECAY).toBeGreaterThan(0.01)
   })
 })
 

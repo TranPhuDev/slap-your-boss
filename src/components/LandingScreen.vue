@@ -64,7 +64,7 @@ function updateVibration(event: Event) {
   <section class="landing-screen">
     <header class="landing-header">
       <p class="brand">SLAP YOUR BOSS</p>
-      <p class="tagline">A silly cartoon stress-relief game. Keep it virtual.</p>
+      <p class="tagline">Did your boss just scold you?</p>
     </header>
 
     <CharacterPreview :face="face" />
