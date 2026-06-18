@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import CharacterPreview from './CharacterPreview.vue'
+import SupportGameButton from './SupportGameButton.vue'
+import { KOFI_URL } from '../config/support'
 import type { FaceAsset, GameResult } from '../types/game'
 
 const props = defineProps<{
@@ -31,5 +33,6 @@ const emit = defineEmits<{
       <button class="primary-button" @click="emit('slapAgain')">SLAP AGAIN</button>
       <button @click="emit('newBoss')">NEW BOSS</button>
     </div>
+    <SupportGameButton :href="KOFI_URL" />
   </section>
 </template>

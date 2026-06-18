@@ -6,6 +6,7 @@ import { IMPACT_PARTICLE_ALPHA_DECAY, SLAP_RECOIL_DURATION_MS } from './pixiRunt
 import { clamp } from '../utils/math'
 import { validateBossName, validateImageFile } from '../utils/validation'
 import { formatFaceProcessingError } from '../services/faceProcessing'
+import { normalizeKofiUrl } from '../config/support'
 import { applyMeshSlapImpulse, clampDisplacements, gaussianFalloff, resetMesh, updateMeshSpring } from './face/FaceDeformationSystem'
 import { buildTriangleIndicesFromConnections, getOfficialFaceMeshTopology, validateTriangleIndices } from './face/faceMeshTopology'
 import { buildUvs, buildVerticesFromUvs, cropRectFromLandmarksDirectional, faceCropFrameInHeadDisplay } from './face/FaceMeshBuilder'
@@ -178,6 +179,13 @@ describe('game formulas', () => {
     expect(SLAP_RECOIL_DURATION_MS).toBeLessThanOrEqual(900)
     expect(IMPACT_PARTICLE_ALPHA_DECAY).toBeLessThan(0.025)
     expect(IMPACT_PARTICLE_ALPHA_DECAY).toBeGreaterThan(0.01)
+  })
+
+  it('normalizes Ko-fi support URLs without game data', () => {
+    expect(normalizeKofiUrl('https://ko-fi.com/slapyourboss')).toBe('https://ko-fi.com/slapyourboss')
+    expect(normalizeKofiUrl('https://ko-fi.com/slapyourboss?bossName=Boss&score=100')).toBe('https://ko-fi.com/slapyourboss')
+    expect(normalizeKofiUrl('https://example.com/slapyourboss')).toBe('')
+    expect(normalizeKofiUrl('')).toBe('')
   })
 })
 

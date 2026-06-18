@@ -2,8 +2,8 @@
 
 ## Current Status
 
-Active feature: F-020  
-Overall status: F-020 implemented and command-verified; SEO assets and Vercel Analytics integration are in place  
+Active feature: F-021  
+Overall status: F-021 implemented and command-verified; Ko-fi support is gated by VITE_KOFI_URL  
 Last updated: 2026-06-18
 
 ## Baseline
@@ -16,11 +16,66 @@ Last updated: 2026-06-18
 
 ## Current Plan
 
-1. Add production SEO metadata, canonical domain, Open Graph, Twitter card, JSON-LD, robots, sitemap, and OG image.
-2. Integrate Vercel Web Analytics once without sending boss/photo data.
-3. Verify tests, typecheck, build, SEO output check, and harness check.
+1. Add `VITE_KOFI_URL` to `.env.example`.
+2. Render Ko-fi support only outside gameplay and only when the configured URL is valid.
+3. Verify tests, typecheck, build, SEO check, and harness check.
 
 ## Work Log
+
+### 2026-06-18 - F-021 Ko-fi donation support
+
+Feature ID: F-021
+
+Work performed:
+
+- Marked F-020 done and added F-021 as the active feature.
+- Added `VITE_KOFI_URL=https://ko-fi.com/slapyourboss` to `.env.example`.
+- Added `normalizeKofiUrl` and `KOFI_URL` in `src/config/support.ts`.
+- Added `SupportGameButton.vue` with comic styling, responsive layout, `target="_blank"`, and `rel="noopener noreferrer"`.
+- Rendered the support button below the Slap Report primary actions.
+- Added a compact support link in the footer, hidden during gameplay with `phase !== 'PLAYING'`.
+- Ensured Ko-fi URL normalization strips query data and accepts only the official Ko-fi account URL.
+- Added unit coverage for Ko-fi URL normalization.
+
+Files created:
+
+- `.env.example`
+- `src/components/SupportGameButton.vue`
+- `src/config/support.ts`
+
+Files modified:
+
+- `harness/FEATURE_LIST.md`
+- `harness/PROGRESS.md`
+- `harness/TEST_CASES.md`
+- `src/App.vue`
+- `src/components/ResultScreen.vue`
+- `src/game/game.test.ts`
+- `src/style.css`
+
+Commands run:
+
+```text
+node scripts/harness-check.mjs
+pnpm test
+pnpm typecheck
+npm run build
+pnpm test:seo
+rg -n 'KOFI_URL|ko-fi|SupportGameButton|noopener noreferrer|bossName=|fileName=|landmarks' .env.example src
+```
+
+Results:
+
+- Harness check passed with F-021 active.
+- `pnpm test` passed: 1 file, 15 tests.
+- `pnpm typecheck` passed.
+- `npm run build` passed. Vite still emits the known non-fatal chunk-size warning.
+- `pnpm test:seo` passed.
+- Source search confirmed the Ko-fi env/helper/component usage and `noopener noreferrer`; no Ko-fi link appends boss name, score, image, file name, or landmarks.
+
+Remaining:
+
+- Actual Ko-fi button visibility requires setting `VITE_KOFI_URL` in the deployed environment or local `.env`.
 
 ### 2026-06-18 - F-020 production SEO and Vercel Analytics
 
@@ -1108,6 +1163,46 @@ Blocked/not completed:
 
 - Attempted production preview HTTP verification by starting `pnpm preview` in the background, but the shell policy rejected the background process command. No browser automation tool is available in this session.
 - Real photo MediaPipe verification, no-face/multiple-face manual verification, network/storage inspection, and repeated-session browser memory checks still need manual browser verification.
+
+## 2026-06-18 - F-021 landing-only SEO content
+
+Work performed:
+
+- Limited the crawlable SEO content section to the landing phase only.
+- Limited the semantic footer and optional Ko-fi footer link to the landing phase only.
+- Kept the Slap Report Ko-fi button unchanged so donation support remains available after a completed round.
+
+Files changed:
+
+- `src/App.vue`
+- `harness/PROGRESS.md`
+- `harness/TEST_CASES.md`
+
+Commands run:
+
+- `pnpm test`
+- `pnpm typecheck`
+- `npm run build`
+- `pnpm test:seo`
+- `node scripts\harness-check.mjs`
+- `pnpm test:seo`
+- `pnpm typecheck`
+- `npm run build`
+- `node scripts\harness-check.mjs`
+- `pnpm test:seo`
+
+Results:
+
+- `pnpm test` passed: 1 file, 15 tests.
+- `pnpm typecheck` passed.
+- `npm run build` passed and emitted the existing non-fatal Vite chunk-size warning.
+- `pnpm test:seo` passed after the production build.
+- `node scripts\harness-check.mjs` passed with F-021 active.
+- Final rerun after template cleanup also passed: `pnpm typecheck`, `npm run build`, `node scripts\harness-check.mjs`, and `pnpm test:seo`.
+
+Remaining work:
+
+- Browser visual confirmation can still verify the section transition in a real viewport.
 
 ## Rules
 

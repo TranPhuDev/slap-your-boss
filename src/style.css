@@ -294,6 +294,38 @@ input:focus-visible {
   gap: 10px;
 }
 
+.support-game-button {
+  width: min(360px, 100%);
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 3px solid var(--line);
+  border-radius: 8px;
+  padding: 9px 14px;
+  background: var(--yellow);
+  color: var(--ink);
+  font-weight: 1000;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 0 4px 0 var(--line);
+}
+
+.support-game-button span:first-child {
+  color: var(--red);
+  font-size: 1.1em;
+}
+
+.support-game-button.compact {
+  width: auto;
+  min-height: 0;
+  border-width: 2px;
+  padding: 4px 8px;
+  box-shadow: none;
+  font-size: 0.92rem;
+}
+
 .toggles label {
   min-height: 46px;
   display: flex;

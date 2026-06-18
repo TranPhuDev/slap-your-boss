@@ -770,7 +770,7 @@ The result screen can show seven score ranks instead of five, giving players two
 
 ## F-020 — Production SEO and Vercel Analytics
 
-State: active
+State: done
 Priority: P1
 
 ### Behavior
@@ -807,3 +807,44 @@ The production site has complete SEO metadata, crawlable content, canonical doma
 - Run `pnpm typecheck`.
 - Run `pnpm build`.
 - Run the SEO output check.
+
+
+---
+
+## F-021 — Ko-fi donation support
+
+State: active
+Priority: P2
+
+### Behavior
+
+The result screen and non-gameplay footer can show a Ko-fi support link when `VITE_KOFI_URL` is configured.
+
+### Scope
+
+- Add `VITE_KOFI_URL` to `.env.example`.
+- Read the Ko-fi URL from `import.meta.env.VITE_KOFI_URL`.
+- Add a reusable `SupportGameButton.vue`.
+- Render support below Slap Report primary actions and a small footer link outside gameplay.
+- Open Ko-fi in a new tab with `noopener,noreferrer`.
+- Hide support UI when the env var is missing or invalid.
+
+### Out of scope
+
+- Showing donation UI during gameplay.
+- Sending boss name, score, image data, file name, landmarks, or Slap Report data to Ko-fi.
+- Backend, database, login, payment processing, custom analytics events, or gameplay changes.
+
+### Acceptance criteria
+
+- Support UI uses only the configured Ko-fi base URL and never appends game/user data.
+- Support UI is hidden when `VITE_KOFI_URL` is not configured.
+- Donation UI does not render during gameplay.
+- Link opens in a new tab with `noopener,noreferrer`.
+- `pnpm test` and `npm run build` succeed.
+
+### Verification
+
+- Run `node .\scripts\harness-check.mjs`.
+- Run `pnpm test`.
+- Run `npm run build`.

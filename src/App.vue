@@ -3,6 +3,8 @@ import { computed, onBeforeUnmount, ref } from 'vue'
 import GameStage from './components/GameStage.vue'
 import LandingScreen from './components/LandingScreen.vue'
 import ResultScreen from './components/ResultScreen.vue'
+import SupportGameButton from './components/SupportGameButton.vue'
+import { KOFI_URL } from './config/support'
 import { GAME_DURATION_MS } from './game/constants'
 import { createAudioEngine } from './game/audio'
 import { createInitialRoundState, registerSlap, resetRoundState } from './game/round'
@@ -155,12 +157,11 @@ onBeforeUnmount(() => {
       @slap-again="slapAgain"
       @new-boss="newBoss"
     />
-    <section class="seo-content" aria-labelledby="about-game-title">
+    <section v-if="phase === 'LANDING'" class="seo-content" aria-labelledby="about-game-title">
       <h1 id="about-game-title">Slap Your Boss – A Funny 15-Second Browser Game</h1>
 
       <p>
-        Slap Your Boss is a free cartoon browser game where you upload a photo, place it on an office character and tap or
-        swipe for 15 seconds to build combos and create a Slap Report.
+        Slap Your Boss is a free cartoon browser game where you upload a photo, place it on an office character and swipe for 15 seconds to build combos and create a Slap Report.
       </p>
 
       <h2 id="how-to-play">How to play</h2>
@@ -169,7 +170,7 @@ onBeforeUnmount(() => {
         <li>Enter a boss name.</li>
         <li>Choose or capture a photo.</li>
         <li>Press Play.</li>
-        <li>Tap or swipe for 15 seconds.</li>
+        <li>Swipe for 15 seconds.</li>
         <li>Review your Slap Report and challenge a friend.</li>
       </ol>
 
@@ -198,12 +199,13 @@ onBeforeUnmount(() => {
         <p>Yes. Supported mobile browsers can capture a photo and play using touch controls.</p>
       </details>
     </section>
-    <footer class="site-footer">
+    <footer v-if="phase === 'LANDING'" class="site-footer">
       <p>Slap Your Boss - a free cartoon browser game.</p>
 
       <nav aria-label="Footer navigation">
         <a href="#how-to-play">How to play</a>
         <a href="#privacy">Privacy</a>
+        <SupportGameButton :href="KOFI_URL" compact />
       </nav>
 
       <p>© 2026 Slap Your Boss</p>
