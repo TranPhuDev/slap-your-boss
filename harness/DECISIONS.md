@@ -139,3 +139,18 @@ Render uploaded faces in gameplay with PixiJS `MeshSimple` using landmarks from 
 ### Consequences
 
 Gameplay updates only vertex positions and velocities, not MediaPipe detection or topology. Browser visual verification is still required for final alignment and tuning with real photos.
+
+---
+
+## ADR-011 - Production SEO canonical and Vercel Analytics
+
+Status: accepted  
+Date: 2026-06-18
+
+### Decision
+
+Use `https://www.slap-your-boss.online/` as the only production canonical domain across metadata, robots, sitemap, structured data, README, and SEO checks. Integrate Vercel Web Analytics once with `inject()` from `@vercel/analytics` in `src/main.ts`.
+
+### Consequences
+
+The Vue Analytics component entry is not used because `@vercel/analytics/vue` imports `vue-router`, while this app does not use Vue Router. Analytics remains page-view only and uses a `beforeSend` sanitizer to remove sensitive query parameters if they are ever introduced accidentally.

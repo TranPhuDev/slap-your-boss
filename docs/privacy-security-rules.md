@@ -11,6 +11,8 @@ Non-negotiable:
 
 Permitted network requests are static app/model/assets only unless separately approved.
 
+Vercel Web Analytics is permitted for basic page views only. Do not send custom events or analytics properties containing boss names, uploaded image data, File/Blob/Object URLs, base64, landmarks, face mesh, camera information, or Slap Report contents.
+
 Never log:
 
 - File objects;

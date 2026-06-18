@@ -26,7 +26,7 @@ const emit = defineEmits<{
       <span>Best Slap</span><strong>{{ result.bestSlap }}</strong>
       <span>Final Score</span><strong>{{ result.finalScore }}</strong>
     </div>
-    <h1>{{ result.rank }}</h1>
+    <h2>{{ result.rank }}</h2>
     <div class="result-actions">
       <button class="primary-button" @click="emit('slapAgain')">SLAP AGAIN</button>
       <button @click="emit('newBoss')">NEW BOSS</button>

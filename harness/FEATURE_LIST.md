@@ -733,7 +733,7 @@ Gameplay scoring is harder so high damage, high stress release, and top ranks re
 
 ## F-019 — Expanded score ranks
 
-State: active
+State: done
 Priority: P1
 
 ### Behavior
@@ -764,3 +764,46 @@ The result screen can show seven score ranks instead of five, giving players two
 - Run `pnpm test`.
 - Run `pnpm typecheck`.
 - Run `pnpm build`.
+
+
+---
+
+## F-020 — Production SEO and Vercel Analytics
+
+State: active
+Priority: P1
+
+### Behavior
+
+The production site has complete SEO metadata, crawlable content, canonical domain assets, robots/sitemap files, and one Vercel Web Analytics instance.
+
+### Scope
+
+- Add production SEO metadata, canonical URL, Open Graph, Twitter card, and structured data.
+- Add crawlable SEO content and footer without affecting gameplay behavior.
+- Add robots.txt, sitemap.xml, Vercel configuration, and a real OG image.
+- Install and integrate `@vercel/analytics` once in the Vue app.
+- Add source/build checks for SEO and privacy-sensitive URLs.
+- Update README and harness records.
+
+### Out of scope
+
+- Gameplay, face mesh, scoring, backend, database, login, Google Analytics, cookie tracking, ads, or custom analytics events.
+- Sending boss names, uploaded image data, landmarks, File/Blob/Object URLs, or Slap Report PII to analytics.
+
+### Acceptance criteria
+
+- `@vercel/analytics` is in dependencies and Analytics is initialized exactly once.
+- Analytics uses `inject()` from `@vercel/analytics` with a privacy sanitizer because the package's Vue component entry requires `vue-router`, which this app does not use.
+- Canonical, Open Graph, Twitter card, JSON-LD, robots.txt, sitemap.xml, and `og-cover.png` exist and use `https://www.slap-your-boss.online/`.
+- Crawlable content contains one H1, How to play, privacy, mobile/desktop, FAQ, and footer content.
+- URLs do not contain boss name, image, file, face, blob, base64, or landmark data.
+- `pnpm test`, `pnpm typecheck`, SEO check, and `pnpm build` succeed.
+
+### Verification
+
+- Run `node .\scripts\harness-check.mjs`.
+- Run `pnpm test`.
+- Run `pnpm typecheck`.
+- Run `pnpm build`.
+- Run the SEO output check.

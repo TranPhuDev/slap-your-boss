@@ -155,5 +155,58 @@ onBeforeUnmount(() => {
       @slap-again="slapAgain"
       @new-boss="newBoss"
     />
+    <section class="seo-content" aria-labelledby="about-game-title">
+      <h1 id="about-game-title">Slap Your Boss – A Funny 15-Second Browser Game</h1>
+
+      <p>
+        Slap Your Boss is a free cartoon browser game where you upload a photo, place it on an office character and tap or
+        swipe for 15 seconds to build combos and create a Slap Report.
+      </p>
+
+      <h2 id="how-to-play">How to play</h2>
+
+      <ol>
+        <li>Enter a boss name.</li>
+        <li>Choose or capture a photo.</li>
+        <li>Press Play.</li>
+        <li>Tap or swipe for 15 seconds.</li>
+        <li>Review your Slap Report and challenge a friend.</li>
+      </ol>
+
+      <h2 id="privacy">Private by design</h2>
+
+      <p>Your photo is processed locally on your device and is never uploaded to our servers.</p>
+
+      <h2>Play on mobile or desktop</h2>
+
+      <p>The game works in a modern browser and supports touch, swipe and mouse controls.</p>
+
+      <h2>Frequently asked questions</h2>
+
+      <details>
+        <summary>Is Slap Your Boss free?</summary>
+        <p>Yes. The game is free to play directly in your browser.</p>
+      </details>
+
+      <details>
+        <summary>Is my photo uploaded?</summary>
+        <p>No. Photo processing happens locally on your device.</p>
+      </details>
+
+      <details>
+        <summary>Does the game work on mobile?</summary>
+        <p>Yes. Supported mobile browsers can capture a photo and play using touch controls.</p>
+      </details>
+    </section>
+    <footer class="site-footer">
+      <p>Slap Your Boss - a free cartoon browser game.</p>
+
+      <nav aria-label="Footer navigation">
+        <a href="#how-to-play">How to play</a>
+        <a href="#privacy">Privacy</a>
+      </nav>
+
+      <p>© 2026 Slap Your Boss</p>
+    </footer>
   </main>
 </template>

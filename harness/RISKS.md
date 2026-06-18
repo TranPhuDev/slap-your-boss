@@ -14,3 +14,5 @@
 | R-010 | AI agent scope drift | WIP=1, active feature, explicit out-of-scope, harness check | Open |
 | R-011 | Browser/manual verification was unavailable in this session | Record blocked cases and require real-device verification before public release | Open |
 | R-012 | PixiJS and MediaPipe produce a large main chunk | Build passes; consider dynamic imports/code splitting before public launch | Open |
+| R-013 | Vercel Analytics may not record until enabled in Vercel Dashboard | README documents manual enablement and production verification steps | Open |
+| R-014 | Sensitive data could be accidentally added to URLs and captured as page views | App keeps boss/photo data in memory; analytics `beforeSend` strips sensitive query parameters; SEO check scans for sensitive query patterns | Open |

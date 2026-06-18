@@ -2,8 +2,8 @@
 
 ## Current Status
 
-Active feature: F-019  
-Overall status: F-019 implemented and command-verified; rank table now has seven tiers  
+Active feature: F-020  
+Overall status: F-020 implemented and command-verified; SEO assets and Vercel Analytics integration are in place  
 Last updated: 2026-06-18
 
 ## Baseline
@@ -16,11 +16,89 @@ Last updated: 2026-06-18
 
 ## Current Plan
 
-1. Add two score rank tiers.
-2. Keep final score calculation and result rendering unchanged.
-3. Verify tests, typecheck, build, and harness check.
+1. Add production SEO metadata, canonical domain, Open Graph, Twitter card, JSON-LD, robots, sitemap, and OG image.
+2. Integrate Vercel Web Analytics once without sending boss/photo data.
+3. Verify tests, typecheck, build, SEO output check, and harness check.
 
 ## Work Log
+
+### 2026-06-18 - F-020 production SEO and Vercel Analytics
+
+Feature ID: F-020
+
+Work performed:
+
+- Marked F-019 done and added F-020 as the active feature.
+- Added production SEO metadata in `index.html`: title, description, robots, canonical, theme color, Open Graph, Twitter card, and JSON-LD.
+- Set the canonical production domain to `https://www.slap-your-boss.online/`.
+- Added `public/robots.txt`, `public/sitemap.xml`, `public/og-cover.png`, and `public/apple-touch-icon.png`.
+- Added visible crawlable SEO content and a semantic footer in `src/App.vue`.
+- Changed result rank heading from `h1` to `h2` so the app has one primary H1.
+- Installed `@vercel/analytics` with pnpm.
+- Tried the Vue Analytics component first; production build failed because `@vercel/analytics/vue` imports optional peer `vue-router`, which this app does not use.
+- Integrated Analytics once in `src/main.ts` using `inject()` from `@vercel/analytics` with a `beforeSend` sanitizer for sensitive query parameters.
+- Added `scripts/seo-check.mjs` and `pnpm test:seo` to verify dist SEO output, static assets, structured data, analytics singleton setup, dependency presence, lockfile state, and sensitive URL patterns.
+- Added `vercel.json` with non-invasive Vercel settings that do not proxy or block `/_vercel/insights/`.
+- Updated README, deployment/privacy docs, decisions, and risks.
+
+Files created:
+
+- `public/apple-touch-icon.png`
+- `public/og-cover.png`
+- `public/robots.txt`
+- `public/sitemap.xml`
+- `scripts/seo-check.mjs`
+- `vercel.json`
+
+Files modified:
+
+- `README.md`
+- `docs/deployment-rules.md`
+- `docs/privacy-security-rules.md`
+- `harness/DECISIONS.md`
+- `harness/FEATURE_LIST.md`
+- `harness/PROGRESS.md`
+- `harness/RISKS.md`
+- `harness/TEST_CASES.md`
+- `index.html`
+- `package.json`
+- `pnpm-lock.yaml`
+- `src/App.vue`
+- `src/components/ResultScreen.vue`
+- `src/main.ts`
+- `src/style.css`
+
+Commands run:
+
+```text
+node scripts/harness-check.mjs
+pnpm build
+pnpm add @vercel/analytics
+pnpm add @vercel/analytics --store-dir D:\.pnpm-store
+pnpm typecheck
+pnpm test
+pnpm test:seo
+Get-ChildItem dist\index.html,dist\robots.txt,dist\sitemap.xml,dist\og-cover.png,dist\apple-touch-icon.png
+rg -n "@vercel/analytics|@vercel/analytics/vue|<Analytics|inject\(|beforeSend|bossName=|fileName=|\?image=|\?face=|\?landmarks=" package.json pnpm-lock.yaml src scripts index.html README.md
+```
+
+Results:
+
+- Baseline `pnpm build` passed before SEO/Analytics changes.
+- Initial `pnpm add @vercel/analytics` failed due to pnpm store mismatch; rerun with `--store-dir D:\.pnpm-store` succeeded.
+- Initial build with `<Analytics />` from `@vercel/analytics/vue` failed because that entry imports `vue-router`; switched to supported `inject()` fallback.
+- Final harness check passed with F-020 active.
+- Final `pnpm test` passed: 1 file, 14 tests.
+- Final `pnpm typecheck` passed.
+- Final `pnpm build` passed. Vite still emits the known non-fatal chunk-size warning.
+- Final `pnpm test:seo` passed.
+- Dist contains `index.html`, `robots.txt`, `sitemap.xml`, `og-cover.png`, and `apple-touch-icon.png`.
+- Only `pnpm-lock.yaml` exists; no `package-lock.json` was created.
+
+Remaining:
+
+- Vercel Analytics must be enabled in the Vercel Dashboard and verified after production deployment and real traffic.
+- Browser verification of rendered SEO content and gameplay after deployment remains pending.
 
 ### 2026-06-18 - F-019 expanded score ranks
 
