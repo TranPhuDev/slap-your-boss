@@ -1204,6 +1204,35 @@ Remaining work:
 
 - Browser visual confirmation can still verify the section transition in a real viewport.
 
+## 2026-06-18 - F-021 SEO content spacing tweak
+
+Work performed:
+
+- Nudged the landing-page SEO content slightly upward by reducing its top padding and applying a small negative top margin.
+
+Files changed:
+
+- `src/style.css`
+- `harness/PROGRESS.md`
+
+Commands run:
+
+- `pnpm test`
+- `npm run build`
+- `pnpm test:seo`
+- `node scripts\harness-check.mjs`
+
+Results:
+
+- `pnpm test` passed.
+- `npm run build` passed and emitted the existing non-fatal Vite chunk-size warning.
+- `pnpm test:seo` passed.
+- `node scripts\harness-check.mjs` passed with F-021 active.
+
+Remaining work:
+
+- Browser visual check can confirm whether the new spacing feels right on mobile and desktop.
+
 ## Rules
 
 Append a dated entry for each work session. Include:

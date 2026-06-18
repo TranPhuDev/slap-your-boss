@@ -491,7 +491,8 @@ input:focus-visible {
 .seo-content {
   width: min(900px, calc(100% - 32px));
   margin: 0 auto;
-  padding: 32px 0;
+  margin-top: -200px;
+  padding: 20px 0 32px;
   display: grid;
   gap: 14px;
 }
