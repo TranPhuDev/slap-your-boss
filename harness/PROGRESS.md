@@ -2,8 +2,8 @@
 
 ## Current Status
 
-Active feature: F-016  
-Overall status: F-016 implemented and command-verified; favicon now uses a cartoon character SVG  
+Active feature: F-019  
+Overall status: F-019 implemented and command-verified; rank table now has seven tiers  
 Last updated: 2026-06-18
 
 ## Baseline
@@ -16,11 +16,138 @@ Last updated: 2026-06-18
 
 ## Current Plan
 
-1. Replace the default favicon SVG with an original cartoon boss character icon.
-2. Keep the existing `/favicon.svg` link in `index.html`.
-3. Verify build and harness check.
+1. Add two score rank tiers.
+2. Keep final score calculation and result rendering unchanged.
+3. Verify tests, typecheck, build, and harness check.
 
 ## Work Log
+
+### 2026-06-18 - F-019 expanded score ranks
+
+Feature ID: F-019
+
+Work performed:
+
+- Marked F-018 done and added F-019 as the active feature.
+- Added two new rank tiers: `Meeting Breaker` at 60-69 and `Executive Menace` at 85-94.
+- Moved `Boss Battle Legend` to 95-100 so the top rank is harder to earn.
+- Updated product rank documentation and unit tests.
+
+Files modified:
+
+- `harness/FEATURE_LIST.md`
+- `harness/PROGRESS.md`
+- `harness/TEST_CASES.md`
+- `docs/product-requirements.md`
+- `src/game/scoring.ts`
+- `src/game/game.test.ts`
+
+Commands run:
+
+```text
+node scripts/harness-check.mjs
+pnpm test
+pnpm typecheck
+pnpm build
+rg -n "Meeting Breaker|Executive Menace|Boss Battle Legend|rankForScore" src/game/scoring.ts src/game/game.test.ts docs/product-requirements.md
+```
+
+Results:
+
+- Harness check passed with F-019 active.
+- `pnpm test` passed: 1 file, 14 tests.
+- `pnpm typecheck` passed.
+- `pnpm build` passed. Vite still emits the known non-fatal chunk-size warning.
+- Source search confirmed code, tests, and product docs include the new rank tiers.
+
+Remaining:
+
+- Browser result-screen visual verification was not run in this session.
+
+### 2026-06-18 - F-018 harder scoring progression
+
+Feature ID: F-018
+
+Work performed:
+
+- Marked F-017 done and added F-018 as the active feature.
+- Increased raw damage scaling from 1200 to 2100 so face damage rises more slowly.
+- Reduced stress progression from `totalSlaps * 1.8 + bestSlap * 0.35` to `totalSlaps * 1.1 + bestSlap * 0.22`.
+- Reweighted final score to `48%` damage, `32%` stress, and `20%` best slap while keeping the 0-100 cap.
+- Updated scoring unit tests and `docs/game-rules.md`.
+
+Files modified:
+
+- `harness/FEATURE_LIST.md`
+- `harness/PROGRESS.md`
+- `harness/TEST_CASES.md`
+- `docs/game-rules.md`
+- `src/game/scoring.ts`
+- `src/game/game.test.ts`
+
+Commands run:
+
+```text
+node scripts/harness-check.mjs
+pnpm test
+pnpm typecheck
+pnpm build
+rg -n "2100|1\\.1|0\\.22|0\\.48|DAMAGE_SCALING_RAW|STRESS_PER_SLAP" src/game/scoring.ts docs/game-rules.md src/game/game.test.ts
+```
+
+Results:
+
+- Harness check passed with F-018 active.
+- `pnpm test` passed: 1 file, 14 tests.
+- `pnpm typecheck` passed.
+- `pnpm build` passed. Vite still emits the known non-fatal chunk-size warning.
+- Formula search confirmed code, docs, and tests use the updated harder scoring constants.
+
+Remaining:
+
+- Browser/playtest tuning is still pending; the exact difficulty feel may need another pass after real gameplay.
+
+### 2026-06-18 - F-017 animated gameplay combo badge
+
+Feature ID: F-017
+
+Work performed:
+
+- Marked F-016 done and added F-017 as the active feature.
+- Removed the Combo stat card from the gameplay HUD.
+- Added an `X{{ combo }}` badge near the upper-right side of the character that replays a cartoon pop animation when the combo changes.
+- Updated HUD layout from five columns to four columns and restored the HUD's full-width top inset after moving the badge away from the viewport corner.
+- Added mobile HUD layout adjustments and set the combo badge to `pointer-events: none`.
+
+Files modified:
+
+- `harness/FEATURE_LIST.md`
+- `harness/PROGRESS.md`
+- `harness/TEST_CASES.md`
+- `src/components/GameStage.vue`
+- `src/style.css`
+
+Commands run:
+
+```text
+node scripts/harness-check.mjs
+pnpm test
+pnpm typecheck
+pnpm build
+rg -n "<span>Combo|combo-pop|grid-template-columns: repeat\\(4|grid-template-columns: repeat\\(2" src/components/GameStage.vue src/style.css
+```
+
+Results:
+
+- Harness check passed with F-017 active.
+- `pnpm test` passed: 1 file, 14 tests.
+- `pnpm typecheck` passed.
+- `pnpm build` passed. Vite still emits the known non-fatal chunk-size warning.
+- Source search confirmed the old gameplay Combo HUD label is gone and the new `combo-pop` badge styles/template exist near the character-side position.
+
+Remaining:
+
+- Browser visual verification of badge placement/animation is still pending.
 
 ### 2026-06-18 - F-016 cartoon character favicon
 

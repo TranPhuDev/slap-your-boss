@@ -31,9 +31,11 @@ Ranks:
 
 - 0–29 Calm Employee
 - 30–49 Office Rookie
-- 50–69 Deadline Fighter
-- 70–89 Corporate Survivor
-- 90–100 Boss Battle Legend
+- 50–59 Deadline Fighter
+- 60–69 Meeting Breaker
+- 70–84 Corporate Survivor
+- 85–94 Executive Menace
+- 95–100 Boss Battle Legend
 
 Constraints:
 

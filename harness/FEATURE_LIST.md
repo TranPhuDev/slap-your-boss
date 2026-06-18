@@ -618,7 +618,7 @@ Slap visual feedback lasts slightly longer so the head recoil, comic impact part
 
 ## F-016 — Cartoon character favicon
 
-State: active
+State: done
 Priority: P2
 
 ### Behavior
@@ -647,4 +647,120 @@ The website favicon shows a simple cartoon boss character instead of the default
 ### Verification
 
 - Run `node .\scripts\harness-check.mjs`.
+- Run `pnpm build`.
+
+
+---
+
+## F-017 — Animated gameplay combo badge
+
+State: done
+Priority: P1
+
+### Behavior
+
+During gameplay, combo is removed from the HUD row and appears as a cartoon animated `X1`, `X2`, etc. badge near the upper-right side of the character.
+
+### Scope
+
+- Remove the combo stat card from the gameplay HUD.
+- Add a top-right animated combo badge using the existing combo state.
+- Keep combo scoring/reset formulas unchanged.
+- Preserve mobile layout and avoid blocking gameplay input.
+
+### Out of scope
+
+- Changes to scoring formulas, input cooldown, round timing, or result report metrics.
+- New PixiJS gameplay effects.
+- Backend, upload service, database, login, or public photo storage.
+
+### Acceptance criteria
+
+- Gameplay HUD no longer contains the Combo stat card.
+- Combo appears as `Xn` in a cartoon-style badge near the character's upper-right side during gameplay.
+- The combo badge animates when the displayed combo changes.
+- Badge does not intercept gameplay pointer input.
+- `pnpm test`, `pnpm typecheck`, and `pnpm build` succeed.
+
+### Verification
+
+- Run `node .\scripts\harness-check.mjs`.
+- Run `pnpm test`.
+- Run `pnpm typecheck`.
+- Run `pnpm build`.
+
+
+---
+
+## F-018 — Harder scoring progression
+
+State: done
+Priority: P1
+
+### Behavior
+
+Gameplay scoring is harder so high damage, high stress release, and top ranks require stronger sustained play.
+
+### Scope
+
+- Tune score/damage/stress formulas to progress more slowly.
+- Keep score and metric ranges capped at 0-100.
+- Keep combo timing, input behavior, 15-second round duration, and result metrics unchanged.
+- Update formula documentation and unit tests.
+
+### Out of scope
+
+- Changing round duration, input cooldown, face processing, or PixiJS visual effects.
+- New leaderboard, backend, database, login, or public photo storage.
+
+### Acceptance criteria
+
+- Final score remains capped at 100.
+- Low/no activity still scores low.
+- Strong performance can still reach high ranks, but requires more effort than before.
+- Existing result metrics and rank labels remain.
+- `pnpm test`, `pnpm typecheck`, and `pnpm build` succeed.
+
+### Verification
+
+- Run `node .\scripts\harness-check.mjs`.
+- Run `pnpm test`.
+- Run `pnpm typecheck`.
+- Run `pnpm build`.
+
+
+---
+
+## F-019 — Expanded score ranks
+
+State: active
+Priority: P1
+
+### Behavior
+
+The result screen can show seven score ranks instead of five, giving players two additional achievement tiers.
+
+### Scope
+
+- Add two new `rankForScore` tiers.
+- Keep final score calculation and 0-100 score range unchanged.
+- Update product rank documentation and unit tests.
+
+### Out of scope
+
+- Changing scoring formulas, input behavior, round duration, or result layout.
+- Backend, upload service, database, login, or public photo storage.
+
+### Acceptance criteria
+
+- `rankForScore` returns seven distinct ranks across 0-100.
+- Existing result screen continues to display the returned rank.
+- Product rank documentation matches code.
+- `pnpm test`, `pnpm typecheck`, and `pnpm build` succeed.
+
+### Verification
+
+- Run `node .\scripts\harness-check.mjs`.
+- Run `pnpm test`.
+- Run `pnpm typecheck`.
 - Run `pnpm build`.

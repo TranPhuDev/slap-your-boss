@@ -43,7 +43,9 @@ Damage:
 
 ```ts
 rawDamage += slapPower * comboMultiplier;
-faceDamage = Math.round(100 * (1 - Math.exp(-rawDamage / 1200)));
+faceDamage = Math.round(100 * (1 - Math.exp(-rawDamage / 2100)));
+stressReleased = Math.round(totalSlaps * 1.1 + bestSlap * 0.22);
+finalScore = Math.round(faceDamage * 0.48 + stressReleased * 0.32 + bestSlap * 0.2);
 ```
 
 Cursor:
