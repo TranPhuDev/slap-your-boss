@@ -121,7 +121,6 @@ function installE2EApi() {
       <div><span>Boss</span><strong>{{ bossName }}</strong></div>
       <div><span>Time</span><strong>{{ (timeLeft / 1000).toFixed(1) }}</strong></div>
       <div><span>Slaps</span><strong>{{ round.totalSlaps }}</strong></div>
-      <div><span>Damage</span><strong>{{ round.faceDamage }}%</strong></div>
     </header>
     <div v-if="combo > 0" :key="combo" class="combo-pop" aria-live="polite">X{{ combo }}</div>
     <div
