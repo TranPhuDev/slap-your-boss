@@ -209,6 +209,7 @@ onBeforeUnmount(() => {
       </nav>
 
       <p>© 2026 Slap Your Boss</p>
+      <p>Contact: tranphudev3110@gmail.com</p>
     </footer>
   </main>
 </template>
